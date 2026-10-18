@@ -45,7 +45,16 @@ function changeQuantity(cart, productId, newQuantity) {
 }
 
 
-function removeFromCart() { return notImplemented(); }
+function removeFromCart(cart, productId) {
+  const index = cart.findIndex(item => item.id === productId);
+
+  if (index === -1) {
+    return cart;
+  }
+  cart.splice(index, 1);
+  return cart;
+}
+
 function calculateCartSubtotal() { return notImplemented(); }
 function calculateOrderTotal() { return notImplemented(); }
 
