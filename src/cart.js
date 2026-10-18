@@ -58,7 +58,21 @@ function removeFromCart(cart, productId) {
 function calculateCartSubtotal(cart) {
   return cart.reduce((total, item) => { return total + item.price * item.quantity; }, 0);
 }
-function calculateOrderTotal() { return notImplemented(); }
+
+function calculateOrderTotal(cart, promo) {
+  const subtotal = calculateCartSubtotal(cart)
+  let delivery = 0
+  let discount = 0;
+  if (subtotal > 20000 && promo === "SAVE10") {
+    discount = subtotal / 10;
+  }
+
+  if (subtotal < 50000) {
+    delivery = 30000
+  }
+  const total = subtotal - discount + delivery;
+  return {subtotal, discount, delivery, total};
+}
 
 const cartApi = { addToCart, changeQuantity, removeFromCart, calculateCartSubtotal, calculateOrderTotal };
 
