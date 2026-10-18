@@ -7,19 +7,44 @@ function addToCart(cart, product, quantity) {
     throw new RangeError('Количество должно быть больше нуля');
   }
 
-  if (quantity > product.stock) {
-    throw new RangeError('Недостаточно товара на складе');
-  }
-
   const prod = cart.find(prod => prod.id === product.id);
   if (!prod) {
+
+    if (quantity > product.stock) {
+      throw new RangeError('Недостаточно товара на складе');
+    }
+
     cart.push({ ...product, quantity: quantity });
   } else {
+    if (prod.quantity + quantity > product.stock) {
+      throw new RangeError('Недостаточно товара на складе');
+    }
     prod.quantity += quantity;
   }
   return cart;
 }
-function changeQuantity() { return notImplemented(); }
+
+function changeQuantity(cart, productId, newQuantity) {
+  if (newQuantity <= 0) {
+    throw new RangeError('Количество должно быть больше нуля');
+  }
+
+  const productInCart = cart.find(item => item.id === productId);
+
+  if (!productInCart) {
+    return cart;
+  }
+
+  if (newQuantity > productInCart.stock) {
+    throw new RangeError('Недостаточно товара на складе');
+  }
+
+  productInCart.quantity = newQuantity;
+
+  return cart
+}
+
+
 function removeFromCart() { return notImplemented(); }
 function calculateCartSubtotal() { return notImplemented(); }
 function calculateOrderTotal() { return notImplemented(); }
